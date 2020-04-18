@@ -16,8 +16,9 @@ on:
       - master
     paths:
       - '.config'
-#  schedule:
-#    - cron: 0 8 * * 5
+      - 'feeds.conf.default'
+  schedule:
+      - cron: 0 8 * * 5
 #  watch:
 #    types: started
 
@@ -25,6 +26,7 @@ env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
   CONFIG_FILE: .config
+  FEEDS_FILE: feeds.conf.default
   DIY_SH: diy.sh
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: false
@@ -54,6 +56,11 @@ jobs:
 
     - name: Clone source code
       run: git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
+
+    - name: Change feeds.conf.default
+      run: |
+        [ -e files ] && mv files openwrt/files
+        [ -e $FEEDS_FILE ] && mv $FEEDS_FILE openwrt/feeds.conf.dafault
 
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
