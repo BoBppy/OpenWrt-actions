@@ -27,6 +27,9 @@ Build OpenWrt using GitHub Actions
 - [Cisco](https://www.cisco.com/)
 - [OpenWrt](https://github.com/openwrt/openwrt)
 - [Lean's OpenWrt](https://github.com/coolsnowwolf/lede)
+​-​ [​Cowtransfer​](https://cowtransfer.com)
+​-​ [​WeTransfer​](https://wetransfer.com/)
+​-​ [​Mikubill/transfer​](https://github.com/Mikubill/transfer)
 
 ## License
 
