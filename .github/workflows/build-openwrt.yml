@@ -16,7 +16,6 @@ on:
       - master
     paths:
       - '.config'
-      - 'feeds.conf.default'
   schedule:
       - cron: 0 8 * * 5
 #  watch:
@@ -27,7 +26,8 @@ env:
   REPO_BRANCH: master
   CONFIG_FILE: .config
   FEEDS_FILE: feeds.conf.default
-  DIY_SH: diy.sh
+  DIY_P1_SH: diy-part1.sh
+  DIY_P2_SH: diy-part2.sh
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: true
   UPLOAD_FIRMWARE: true
@@ -60,10 +60,12 @@ jobs:
     - name: Clone source code
       run: git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
 
-    - name: Change feeds.conf.default
+    - name: Load custom feeds
       run: |
-        [ -e files ] && mv files openwrt/files
-        [ -e $FEEDS_FILE ] && mv $FEEDS_FILE openwrt/feeds.conf.dafault
+        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
+        chmod +x $DIY_P1_SH
+        cd openwrt
+        ../$DIY_P1_SH
 
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
@@ -75,9 +77,9 @@ jobs:
       run: |
         [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-        chmod +x $DIY_SH
+        chmod +x $DIY_P2_SH
         cd openwrt
-        ../$DIY_SH
+        ../$DIY_P2_SH
 
     - name: SSH connection to Actions
       uses: P3TERX/debugger-action@master
